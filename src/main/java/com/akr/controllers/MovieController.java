@@ -1,6 +1,7 @@
 package com.akr.controllers;
 
 import com.akr.dtos.MovieDto;
+import com.akr.exceptions.EmptyFileException;
 import com.akr.services.MovieService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +29,9 @@ public class MovieController {
     @PostMapping("/")
     public ResponseEntity<MovieDto> addMovieHandler(@RequestPart MultipartFile file, @RequestPart @Validated String movieDto) throws IOException {
 
+        if(file.isEmpty()){
+            throw new EmptyFileException("File cannot be empty");
+        }
         MovieDto dto = convertToMovieDto(movieDto);
         System.out.println(dto);
         return new ResponseEntity<>(movieService.addMovie(dto, file), HttpStatus.CREATED);

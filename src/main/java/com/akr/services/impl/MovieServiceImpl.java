@@ -2,6 +2,8 @@ package com.akr.services.impl;
 
 import com.akr.dtos.MovieDto;
 import com.akr.entities.Movie;
+import com.akr.exceptions.FileExistsException;
+import com.akr.exceptions.MovieNotFoundException;
 import com.akr.repos.MovieRepo;
 import com.akr.services.FileService;
 import com.akr.services.MovieService;
@@ -41,7 +43,7 @@ public class MovieServiceImpl implements MovieService {
     public MovieDto addMovie(MovieDto movieDto, MultipartFile file) throws IOException {
 
         if(Files.exists(Paths.get(path + File.separator + file.getOriginalFilename()))){
-            throw new RuntimeException("File already exists, please enter another file name");
+            throw new FileExistsException("File already exists, please enter another file name");
         }
 
         movieDto.setPoster(file.getOriginalFilename());
@@ -65,7 +67,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieDto getMovie(Integer movieId) {
 
-        Movie savedMovie = movieRepo.findById(movieId).orElseThrow(() -> new RuntimeException("Movie Not Found"));
+        Movie savedMovie = movieRepo.findById(movieId).orElseThrow(() -> new MovieNotFoundException("Movie Not Found"));
 
         String posterUrl = baseUrl + "/file/" + savedMovie.getPoster();
 
@@ -94,7 +96,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieDto updateMovie(Integer movieId, MovieDto movieDto, MultipartFile file) throws IOException {
 
-        Movie savedMovie = movieRepo.findById(movieId).orElseThrow(() -> new RuntimeException("Movie Not Found"));
+        Movie savedMovie = movieRepo.findById(movieId).orElseThrow(() -> new MovieNotFoundException("Movie Not Found"));
 
         String savedFileName = savedMovie.getPoster();
 
@@ -124,7 +126,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public String deleteMovie(Integer movieId) throws IOException {
-        Movie savedMovie = movieRepo.findById(movieId).orElseThrow(() -> new RuntimeException("Movie Not Found with id "+ movieId));
+        Movie savedMovie = movieRepo.findById(movieId).orElseThrow(() -> new MovieNotFoundException("Movie Not Found with id "+ movieId));
         Files.deleteIfExists(Paths.get(path + File.separator + savedMovie.getPoster()));
         movieRepo.deleteById(movieId);
         return "Movie successfully deleted with id " + movieId;
