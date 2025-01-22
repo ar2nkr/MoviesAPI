@@ -1,8 +1,10 @@
 package com.akr.controllers;
 
 import com.akr.dtos.MovieDto;
+import com.akr.dtos.MoviePageResponse;
 import com.akr.exceptions.EmptyFileException;
 import com.akr.services.MovieService;
+import com.akr.utils.AppConstants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -62,5 +64,21 @@ public class MovieController {
     @DeleteMapping("/{movieId}")
     public ResponseEntity<String> deleteMovieHandler(@PathVariable Integer movieId) throws IOException {
         return ResponseEntity.ok(movieService.deleteMovie(movieId));
+    }
+
+    @GetMapping("/pages")
+    public ResponseEntity<MoviePageResponse> getMoviesPagesHandler(@RequestParam(defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+                                                                   @RequestParam(defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize
+                                                                   ){
+        return ResponseEntity.ok(movieService.getAllMoviesWithPagination(pageNumber, pageSize));
+    }
+
+    @GetMapping("/pages/sort")
+    public ResponseEntity<MoviePageResponse> getMoviesPagesAndSortHandler(@RequestParam(defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+                                                                   @RequestParam(defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+                                                                   @RequestParam(defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+                                                                          @RequestParam(defaultValue = AppConstants.SORT_DIR, required = false) String dir
+                                                                          ){
+        return ResponseEntity.ok(movieService.getAllMoviesWithPaginationAndSorting(pageNumber, pageSize, sortBy, dir));
     }
 }

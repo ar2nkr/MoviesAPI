@@ -11,7 +11,7 @@ import java.util.Set;
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
    private Integer movieId;
 
     @Column(nullable = false)
@@ -39,8 +39,7 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(Integer movieId, String title, String director, String studio, Set<String> movieCast, Integer releaseYear, String poster) {
-        this.movieId = movieId;
+    public Movie(String title, String director, String studio, Set<String> movieCast, Integer releaseYear, String poster) {
         this.title = title;
         this.director = director;
         this.studio = studio;
@@ -50,10 +49,6 @@ public class Movie {
     }
     public Integer getMovieId() {
         return movieId;
-    }
-
-    public void setMovieId(Integer movieId) {
-        this.movieId = movieId;
     }
 
     public String getTitle() {

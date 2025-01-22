@@ -14,12 +14,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(FileExistsException.class)
-    public ProblemDetail handleFileExistsException(MovieNotFoundException ex){
+    public ProblemDetail handleFileExistsException(FileExistsException ex){
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(EmptyFileException.class)
     public ProblemDetail handleEmptyFileException(EmptyFileException ex){
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(MovieAlreadyExistsException.class)
+    public ProblemDetail handleMovieAlreadyExistsException(MovieAlreadyExistsException ex){
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 }
