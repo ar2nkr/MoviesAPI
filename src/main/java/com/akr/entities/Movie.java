@@ -1,23 +1,17 @@
 package com.akr.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Set;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+@Valid
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
    private Integer movieId;
 
     @Column(nullable = false)
@@ -37,11 +31,84 @@ public class Movie {
    private Set<String> movieCast;
 
     @Column(nullable = false)
-    @NotBlank(message = "Please provide movie's release year")
    private Integer releaseYear;
 
     @Column(nullable = false)
     @NotBlank(message = "Please provide movie's poster")
    private String poster;
+    public Movie() {
+    }
 
+    public Movie(String title, String director, String studio, Set<String> movieCast, Integer releaseYear, String poster) {
+        this.title = title;
+        this.director = director;
+        this.studio = studio;
+        this.movieCast = movieCast;
+        this.releaseYear = releaseYear;
+        this.poster = poster;
+    }
+    public Integer getMovieId() {
+        return movieId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getStudio() {
+        return studio;
+    }
+
+    public void setStudio(String studio) {
+        this.studio = studio;
+    }
+
+    public Set<String> getMovieCast() {
+        return movieCast;
+    }
+
+    public void setMovieCast(Set<String> movieCast) {
+        this.movieCast = movieCast;
+    }
+
+    public Integer getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster( String poster) {
+        this.poster = poster;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "movieId=" + movieId +
+                ", title='" + title + '\'' +
+                ", director='" + director + '\'' +
+                ", studio='" + studio + '\'' +
+                ", movieCast=" + movieCast +
+                ", releaseYear=" + releaseYear +
+                ", poster='" + poster + '\'' +
+                '}';
+    }
 }
